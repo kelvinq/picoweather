@@ -1,0 +1,116 @@
+picotron cartridge // www.picotron.net
+version 2
+
+:: gfx/
+:: map/
+:: sfx/
+:: gfx/0.gfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTA0LTMwIDA5OjEyOjAyIixtb2RpZmllZD0iMjAyNC0w
+NS0wMiAxMjozNjoxNyIscmV2aXNpb249NTJdXWx6NABtAAAABTEAAPMUe1swXT17Ym1wPXB4dQBD
+IBAQBPDwLGZsYWdzPTAscGFuX3gIAM95PTAsem9vbT04fSwxAP--------------------------
+-------------------------------------_dQbT04fX0=
+:: gfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTA0LTMwIDA5OjEyOjAyIixzdG9yZWQ9IjIwMjQtMDQt
+MzAgMDk6MTI6MDIiXV1sejQABAAAAAMAAAAwbmls
+:: json.lua
+--[[pod_format="raw",created="2024-04-30 09:37:00",modified="2024-05-02 12:13:18",revision=33]]
+
+:: label.png
+b64$iVBORw0KGgoAAAANSUhEUgAAAeAAAAEOCAIAAADe_FMwAAAEuUlEQVR4Ae3dsY3zNhgGYMlw
+r1bNZQFvkDVujMyTMbLGv8G-QNK49QROQYAgKJKmbN9ZOj9PYUjkR-KTYLxqBwAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADg24wvPPt6OY-TvLze
+_Fn9y6_X8zAM3-aMz20eeLmDV7D6m9adzuM0j9McYrp-4RaaBzaRNq86OMZWSI1lioWRYqCE7Muu
+s-r0dtVZYcPa6cVtbzZ5c2E20lNc67b93hqHAltzeNmXYZrDb0yHcB1SI_ROGqY34z6rT2-XnhVH
+am2nt7Umw3gtBIsN1Lbt77b93rIPRqiUzrBZx812djOaQ8TU6juTvVj8rMxKQ-O5z97otnNt9vUC
+BPTqdLuvPmZif1p9xQemc9uYlbXmVyVp-7Pc-f0Afn5Ax2BaBkSaWbXZ_LuszyLvkbOWsdsZatmJ
+7YVpTbH5nge5_SxpD-2PDLxjQKfp0LhoLMySqxZqq87qObez1dq2y4VZ5t7RQ0---Y8JAAAAAAAA
+AAAAAAAAAAAAAADbMe607_vlPE7z3s_6Xs7DMMTNs9tGJfAODl7Ba78x4zSH8M1uG5XAmzjuNNri
+7zjNteuQa3EkFizrY-bVdivuGW9ra9t6agABvTNpUMasTC-S6IwjWaoWF6bRGQazs4pfi0Yn7bXL
+novBHacAAb0-a-Mrq88ycdVu7bWd6Xwz0_OUvywI6J2pJVqWm3GwkZtpUD7eSTFtb04B7Digx2mO
+mRuvG8mbjrfr09n2WY2u4s7tCE6L01OWCZ5NAQJ66xm96rpnbc-I2rU9-RdHeh4EAAAAAAAAAAAA
+AAAAAAAAAAB_vNErWOV6OY-TfHOqUbacbRev6m0YhuJWjSlgsw5ewboPWj3j7o6-Z6XzOM3jNIcs
+7pwCtuz4bg8cQyrEYgivMBhH0tBM65dlxVXhurZnNls8rnjEqqd7_gcA_H6HN3zmcZpjMsaMTvM6
+zsbbMJslXVqZTsXiOLisLO6ZnV5stZ3OjSxuzwIbdPQKsthqh_B9nrVnO2GlMwjo3QtxWQus-iBr
+77MMx8dj_r6clc4goHejkVbjNMcYHac5uw3XMe-SfZZTMb7TTbKtsj3T8bs7jzVpLqdP4U8PAnqv
+YZ2NpLftfGyMNGZ7jutM1dpWQhkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAIAf6_P06SUAfJHDI_n876_-ZTTA5gI6kNEAGw1oGQ2w3YCW0QBf4fj4Fn-8_dcw
+DP-9-sfbBNiKj9Pnx_nzejl-nD69DQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_Jn_Bz314GRj
+rmEpAAAAEHRFWHRMb2RlUE5HADIwMTEwMjIx41m2wQAAAABJRU5ErkJggg==
+:: main.lua
+--[[pod_format="raw",created="2024-04-30 09:12:02",modified="2024-05-02 12:36:17",revision=70]]
+function string.explode(str, delim)
+	local i = 0
+	local out = {}
+	repeat
+		if sub(str, i, i) == delim then
+			out[#out+1] = sub(str, 0, i-1)
+			str = sub(str, i+1)
+			i = -1
+		end
+		i += 1
+	until i == #str
+	out[#out+1] = str
+	return out
+end
+
+function getlatlong()
+    local latlong=fetch("https://ipapi.co/latlong/")
+    return latlong
+end
+
+function getcity()
+    local city=fetch("https://ipapi.co/city/")
+    return city
+end
+
+function getweather(latlong)
+    fetchurl="https://play.quee.org/?lat="..string.explode(latlong, ",")[1].."&long="..string.explode(latlong, ",")[2]
+    local weather=fetch(fetchurl)
+    return weather
+end
+
+function _init()
+  cls()
+  latlong=getlatlong()
+  weather=getweather(latlong)
+  city=getcity()
+end
+
+function _update()
+end
+
+function _draw()
+    print("the weather in "..city.. " is",40,40,7)
+    print("temperature: "..string.explode(weather,",")[1],60,60,7)
+    print("precipitation: "..string.explode(weather,",")[2],80,80,7)
+end
+:: map/0.map
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTA0LTMwIDA5OjEyOjAyIixtb2RpZmllZD0iMjAyNC0w
+NS0wMiAxMjozNjoxNyIscmV2aXNpb249NTJdXWx6NABoAAAAWBAAAPAIe3tibXA9dXNlcmRhdGEo
+ImkxNiIsMzIDAC8iMAEA--------------------_-EIIiksaGlkZGVuPWZhbHNlLHBhbl94PTAI
+ANJ5PTAsdGlsZV9oPTE2CgAQdwoAgHpvb209MX19
+:: map/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTA0LTMwIDA5OjEyOjAyIixzdG9yZWQ9IjIwMjQtMDQt
+MzAgMDk6MTI6MDIiXV1sejQABAAAAAMAAAAwbmls
+:: sfx/0.sfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTA0LTMwIDA5OjEyOjAyIixtb2RpZmllZD0iMjAyNC0w
+NS0wMiAxMjozNTo1NiIscmV2aXNpb249MzldXWx6NAARAQAAwQgAAPAncHh1AAMoAAADAAQPQBAC
+DgABoAEgAqAOAA8QAA3wygECAwQFBgcAD-_QCAkKCw8MDw0PDg8PEADwAA0PEQ8SDxMPFA8VDxYP
+FxMA8QEPGA8ZDxoPGw8cDx0PHg8fFADxACAPIQ8iDyMPJA8lDyYPJxQA8QAoDykPKg8rDywPLQ8u
+Dy8UAPEAMA8xDzIPMw80DzUPNg83FAD-BTgPOQ86DzsPPA89Dz4PPwAP--D-AQDr-ydaARAGDyAQ
+ASABIAHwAAIQAgwQASAPISABMA9A8MMPKA--8MYP_AoP-w_AD-cPDQHwCQEQBgwwAP--uh--AQDM
+v_gPQAANQP--sPBwCgD--2Qf-wEAl1D-----Hw==
+:: sfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI0LTA0LTMwIDA5OjEyOjAyIixzdG9yZWQ9IjIwMjQtMDQt
+MzAgMDk6MTI6MDIiXV1sejQABAAAAAMAAAAwbmls
+:: .info.pod
+b64$LS1bW3BvZCxhdXRob3I9IktlbHZpbiBRdWVlIixub3Rlcz0iIixydW50aW1lPTUsc3RvcmVk
+PSIyMDI0LTA1LTAyIDEyOjM2OjE3Iix0aXRsZT0iUGljbyBXZWF0aGVyIix2ZXJzaW9uPSIwLjEi
+LHdvcmtzcGFjZXM9e3tsb2NhdGlvbj0ibWFpbi5sdWEjMSIsd29ya3NwYWNlX2luZGV4PTF9LHts
+b2NhdGlvbj0iZ2Z4LzAuZ2Z4Iix3b3Jrc3BhY2VfaW5kZXg9Mn0se2xvY2F0aW9uPSJtYXAvMC5t
+YXAiLHdvcmtzcGFjZV9pbmRleD0zfSx7bG9jYXRpb249InNmeC8wLnNmeCIsd29ya3NwYWNlX2lu
+ZGV4PTR9fV1dbHo0AAQAAAADAAAAMG5pbA==
+:: [eoc]
